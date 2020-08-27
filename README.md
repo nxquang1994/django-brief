@@ -1,1 +1,1 @@
-# django-basic
+# django-quangnx
