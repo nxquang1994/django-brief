@@ -28,4 +28,6 @@ class DeliveryGoods(models.Model):
     delivery = models.ForeignKey(Delivery, on_delete=models.CASCADE)
     goods = models.ForeignKey(Goods, on_delete=models.CASCADE)
     note = models.TextField()
+    def __str_(self):
+        return self.delivery.delivery_name + '_' + self.goods.goods_name
     pass
