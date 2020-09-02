@@ -1,0 +1,254 @@
+$sidebar-width: 190px;
+$breadcrumb-height: 38px;
+$default-padding: 15px;
+$button-xs-width: 70%;
+
+html {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  padding-top: 50px;
+  font-family: Helvetica;
+}
+
+a {
+  text-decoration: none;
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+ul {
+  list-style: none;
+}
+
+/* =====================
+  Sidebar
+===================== */
+.menu-wrapper {
+  width: $sidebar-width;
+  background: $sidebar-default-bg;
+  position: fixed;
+  height: 100%;
+  z-index: 900;
+  transition: all .4s ease 0s;
+  margin-top: 28px;
+
+  .menu-nav {
+    list-style: none;
+    padding: 0;
+    li {
+      text-indent: 10px;
+      a {
+        display: block;
+        width: $sidebar-width;
+        padding: 5px 0px;
+        color: $sidebar-default-color;
+        text-decoration: none;
+        -webkit-transition: background .3s;
+        -moz-transition: background .3s;
+        -o-transition: background .3s;
+        -ms-transition: background .3s;
+        transition: background .3s;
+        &:hover,
+        &:focus {
+          color: $sidebar-hover-color;
+          background-color: $sidebar-hover-bg;
+          text-decoration: none;
+        }
+      }
+    }
+    ul.collapsing,
+    ul.in {
+      list-style: none;
+      padding-left: 0px;
+      background-color: $sidebar-open-bg;
+      a {
+        padding-left: $default-padding;
+      }
+    }
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+  #menubar-wrapper {
+    left: 100%;
+    margin-left: $sidebar-width * -1;
+    margin-top: 0;
+    height: auto;
+  }
+}
+
+@media (min-width: $screen-sm-min) {
+  #menubar-wrapper.hidden-sm-up {
+    display: none;
+  }
+}
+
+@media (min-width: $screen-sm-min) {
+  .hidden-sm-up {
+    display: none;
+  }
+}
+
+@media (min-width: $screen-md-min) {
+  .hidden-md-up {
+    display: none;
+  }
+}
+
+@media (min-width: $screen-lg-min) {
+  .hidden-lg-up {
+    display: none;
+  }
+}
+
+@media (max-width: $screen-md-max) {
+  .hidden-md-down {
+    display: none;
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  .hidden-sm-down {
+    display: none;
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+  .hidden-xs-down {
+    display: none;
+  }
+}
+
+/* =====================
+  Main area
+===================== */
+#main-area {
+  padding-left: 0;
+  padding-top: 28px;
+}
+
+@media (min-width: $screen-sm-min) {
+  #main-area.exist-auth {
+    padding-left: $sidebar-width;
+  }
+}
+
+/* =====================
+  Navigation bar
+===================== */
+.navbar.navbar-inverse {
+  border: none;
+  box-shadow: 0 0px 5px 2px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 0px 5px 2px rgba(0, 0, 0, 0.4);
+
+  .container-fluid {
+    background-color: #0268B4;
+
+    .navbar-header {
+      float: left;
+
+      .navbar-brand {
+        img {
+          display: inline-block;
+          height: 70px;
+          margin: -5px 10px 0 -15px;
+        }
+
+        .header-label-wrapper {
+          position: absolute;
+          top: 30%;
+          left: 5%;
+          color: $breadcrumb-default-color;
+        }
+
+        p {
+          &:first-child {
+            font-size: 28px;
+          }
+          &:last-child {
+            font-size: 15px;
+            margin-top: -5px;
+          }
+        }
+      }
+    }
+
+    .navbar-right {
+      .navbar-toggle {
+        border-color: $navbar-inverse-bg;
+
+        &:hover,
+        &:focus {
+          background-color: transparent;
+        }
+
+        .icon-bar {
+          background-color: $navbar-inverse-bg;
+        }
+      }
+    }
+  }
+}
+
+/* =====================
+  Container
+===================== */
+.container {
+  width: 100%;
+}
+
+/* =====================
+  Icon
+===================== */
+.glyphicon-pencil:not(.no-color),
+.glyphicon-cog:not(.no-color),
+.glyphicon-film:not(.no-color) {
+  color: $edit-color;
+}
+
+.glyphicon-trash:not(.no-color) {
+  color: $delete-color;
+}
+
+.glyphicon-remove:not(.no-color) {
+  color: $delete-color;
+}
+
+.glyphicon-ok-sign:not(.no-color) {
+  color: $brand-ok;
+}
+
+.glyphicon-fire:not(.no-color) {
+  color: $brand-ng;
+}
+
+/* =====================
+  Tag
+===================== */
+.tag-label {
+  padding: .1em .5em .1em;
+  font-size: 100%;
+  font-weight: normal;
+  border-radius: 1em;
+}
+
+.label-holder {
+  background-color: $label-holder-bg;
+}
+
+.label-role {
+  background-color: $label-role-bg;
+}
+
+.label-permission {
+  background-color: $label-permission-bg;
+}
+
+.label-tag {
+  background-color: $label-tag-bg;
+}

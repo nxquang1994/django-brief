@@ -1,0 +1,80 @@
+// Base
+$base-color: #808080;
+$base-gray: desaturate($base-color, 90%);
+$system-color: #337bb7;
+
+// Body
+$body-bg: lighten($base-color, 40%); //Overwrite
+
+// Text
+$state-info-text: #26a4df; //Overwrite
+$state-danger-text: #cf0e21; //Overwrite
+
+// Borders
+$base-border-color: darken($body-bg, 10%);
+$list-group-border: $base-border-color; //Overwrite
+$navbar-default-border: $base-border-color; //Overwrite
+$panel-default-border: $base-border-color; //Overwrite
+$panel-inner-border: $base-border-color; //Overwrite
+
+// Brands
+$brand-primary: #3097d1; //Overwrite
+$brand-info: #8eb4cb; //Overwrite
+$brand-success: #2ab27b; //Overwrite
+$brand-warning: #cbb956; //Overwrite
+$brand-danger: #bf5329; //Overwrite
+$brand-ok: #20c23b;
+$brand-ng: #d50e25;
+
+// Typography
+$icon-font-path: "/static/fonts/"; //Overwrite
+$font-family-sans-serif: "Raleway", sans-serif; //Overwrite
+$font-size-base: 14px; //Overwrite
+$line-height-base: 1.6; //Overwrite
+$text-color: darken($base-gray, 15%); //Overwrite
+$link-color: lighten($text-color, 15%); //Overwrite
+$link-hover-color: darken($text-color, 27%); //Overwrite
+
+// Navbar
+$navbar-default-bg: lighten($base-color, 22%); //Overwrite
+$navbar-inverse-bg: #ffffff; //Overwrite
+$navbar-inverse-link-hover-color: lighten($base-color, 30%); //Overwrite
+$navbar-inverse-link-hover-bg: $navbar-inverse-bg; //Overwrite
+$navbar-inverse-link-active-bg: $navbar-inverse-bg; //Overwrite
+$nav-link-hover-bg: #ffffff; //Overwrite
+$navbar-inverse-brand-hover-color: lighten($base-color, 10%); //Overwrite
+$navbar-button-hover-bg: lighten($base-color, 5%);
+$navbar-button-icon: lighten($base-color, 35%);
+
+// Sidebar
+$sidebar-default-color: lighten($base-color, 5%);
+$sidebar-hover-color: lighten($base-color, 31%);
+$sidebar-default-bg: darken($base-color, 31%);
+$sidebar-hover-bg: darken($base-color, 10%);
+$sidebar-open-bg: darken($base-color, 25%);
+
+// BreadCrumb
+$breadcrumb-default-color: #fff;
+$breadcrumb-default-bg: $system-color;
+$breadcrumb-link-color: lighten($system-color, 40%);
+$breadcrumb-link-hover: #fff;
+
+// List
+$bg-default-color: lighten($base-gray, 30%);
+$table-border-color: darken($base-color, 2%); //Overwrite
+$table-header-color: lighten($base-color, 35%);
+$table-data-color: #fff;
+$table-invalid: #999999;
+
+// Icons
+$delete-color: #d5293b;
+$edit-color: #0099dc;
+
+// Label
+$label-holder-bg: #3e9844;
+$label-role-bg: #3e7e98;
+$label-permission-bg: #b04732;
+$label-tag-bg: #a949c7;
+
+// Inputs
+$required-color: #d01728;

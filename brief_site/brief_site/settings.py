@@ -14,9 +14,18 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 import sys
 import logging
+from django.contrib.messages import constants as messages
+import environ
+
+# Config environment
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+# Reading .env file
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -24,12 +33,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^%3ermo5h_x#q!v8$orb+%4zi270fls_x)o)+*j5t-^wq^qo-)'
+SECRET_KEY = env('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*'
+]
 
 
 # Application definition
@@ -43,7 +53,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apis',
     'rest_framework',
-    'django_nose'
+    'brief_app',
+    'django_nose',
+    'pipeline',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +73,9 @@ ROOT_URLCONF = 'brief_site.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +83,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'brief_site.context_processors.global_settings',
             ],
         },
     },
@@ -83,13 +98,13 @@ WSGI_APPLICATION = 'brief_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'passonate',
-        'USER': 'root',
-        'PASSWORD': '1234567',
-        'HOST': '0.0.0.0',
-        'PORT': '3306',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
         'OPTIONS': {
-            'charset': 'utf8mb4',
+            'charset': env('DB_CHARSET'),
             'use_unicode': True,
             'init_command': 'SET default_storage_engine=INNODB, character_set_connection=utf8, collation_connection=utf8_unicode_ci'
         },
@@ -118,6 +133,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
+# Declare app name
+APP_NAME = env('APP_NAME')
+
+LANGUAGE = 'en'
 
 LANGUAGE_CODE = 'en-us'
 
@@ -134,6 +153,56 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Config sass
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = [
+    ('assets', os.path.join(BASE_DIR, 'static/assets')),
+]
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.CachedFileFinder',
+    'pipeline.finders.PipelineFinder',
+]
+
+PIPELINE_CSS = {
+    'styles': {
+        'source_filenames': (
+            'assets/sass/app.scss',
+        ),
+        'output_filename': 'css/app.css',
+        'extra_context': {
+            'media': 'all,'
+        },
+    },
+}
+
+PIPELINE_JS = {
+    'javascript': {
+        'source_filenames': (
+            'assets/js/jquery.js',
+            'assets/js/bootstrap.js',
+        ),
+        'output_filename': 'js/app.js',
+    },
+}
+
+PIPELINE = {
+    'STYLESHEETS': PIPELINE_CSS,
+    'JAVASCRIPT': PIPELINE_JS,
+    'JS_COMPRESSOR': None,
+    'CSS_COMPRESSOR': None,
+    'DISABLE_WRAPPER': True,
+    'COMPILERS': (
+        'libsasscompiler.LibSassCompiler',
+    ),
+    'SASS_ARGUMENS': '--trace',
+}
 
 # Log
 # Disable logging in running unit test
@@ -196,3 +265,12 @@ NOSE_ARGS = [
     '--cover-package=apis',
     '--cover-erase',
 ]
+
+# Config bootstrap message tags
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
