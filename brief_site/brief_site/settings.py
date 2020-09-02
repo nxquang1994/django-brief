@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apis',
     'rest_framework',
-    'django_nose'
+    'django_nose',
+    'brief_app.apps.BriefAppConfig'
 ]
 
 MIDDLEWARE = [
@@ -85,9 +86,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'passonate',
         'USER': 'root',
-        'PASSWORD': '1234567',
+        'PASSWORD': '123456',
         'HOST': '0.0.0.0',
-        'PORT': '3306',
+        'PORT': '3307',
         'OPTIONS': {
             'charset': 'utf8mb4',
             'use_unicode': True,

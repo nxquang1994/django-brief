@@ -1,0 +1,42 @@
+{% extends "brief_app/base.html" %}
+
+{% block content %}
+    <table id="table-item">
+        <th>Id</th>
+        <th>Category</th>
+        <th>Name</th>
+        <th>Note</th>
+    </table>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#table-item").DataTable({
+            ajax: {
+                url: "{% url 'brief_app:site_data' %}",
+                method: "GET",
+                success: (response) => {
+                    console.log('KKKK');
+                    console.log(response.data);
+                    return response.data;
+                }
+            },
+            columns: [
+                { 
+                    name: 'Id', 
+                    render: function(row, type, set, meta) {
+                        console.log('HHHH');
+                        console.log(row);
+                        return 1;
+                    } 
+                },
+                { name: 'Category', data: 'Category' },
+                { name: 'Name', data: 'Name' },
+                { name: 'Note', data: 'Note' },
+            ]
+        });
+    });
+</script>
+{% endblock %}
+
