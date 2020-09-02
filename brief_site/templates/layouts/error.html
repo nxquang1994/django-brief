@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>{{ APP_NAME }} - {% block title %}{% endblock %}</title>
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <script src="{% static 'js/app.js' %}"></script>
+</head>
+<body>
+<div id="app">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'home' %}">
+          <img src="{% static 'images/bg-logo.png' %}" alt="Logo">
+          <div class="header-label-wrapper">
+            <p>BRIEF Platform</p>
+            <p>Powered by BRIEF TEST</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="text-center">
+    {% block error %}
+    {% endblock %}
+  </div>
+</div>
+</body>
+</html>

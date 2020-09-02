@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>{{ APP_NAME }} - {% block title %}{% endblock %}</title>
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <script src="{% static 'js/app.js' %}"></script>
+</head>
+<body>
+<div id="app">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <!-- Collapsed Hamburger -->
+        <!-- Branding Image -->
+        <a class="navbar-brand" href="{% url 'home' %}">
+          <img src="{% static 'images/bg-logo.png' %}" alt="Logo">
+          <div class="header-label-wrapper">
+            <p>BRIEF Platform</p>
+            <p>Powered by BRIEF TEST</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="navbar-right">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menubar-wrapper">
+          <span class="sr-only">Toggle Navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+  </nav>
+
+  <!-- Screen > 767 -->
+  <div id="sidebar-wrapper" class="menu-wrapper hidden-xs-down">
+    <ul class="menu-nav">
+      <li data-toggle="collapse" href="#item-sidebar">
+        <a>
+          Item Management<span class="glyphicon glyphicon-triangle-bottom"></span>
+        </a>
+      </li>
+      <ul id="item-sidebar" class="collapse">
+        <li>
+          <a href="">Item List</a>
+        </li>
+      </ul>
+    </ul>
+  </div>
+
+  <!-- Screen <= 767 -->
+  <div id="menubar-wrapper" class="menu-wrapper collapse hidden-sm-up" aria-expanded="false">
+    <ul id="menubar-body" class="menu-nav sidebar-collapse">
+      <!-- Comment Menu -->
+      <li id="item-toggle" class="fold-item" data-toggle="collapse" data-target=".item-multiple-collapse">
+        <a>
+          <span>Item Management</span><span class="glyphicon glyphicon-triangle-bottom"></span>
+        </a>
+      </li>
+      <ul id="item-sidebar" class="collapse item-multiple-collapse">
+        <li><a href="">Item List</a></li>
+      </ul>
+    </ul>
+  </div>
+
+  <div id="main-area" class="exist-auth">
+    {% if messages %}
+      {% for message in messages %}
+        {% if forloop.first %}
+        <div class="alert {{ message.tags }} alert-dismissible text-center">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">×</span>
+          </button>
+        {% endif %}
+          <p>{{ message }}</p>
+      {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>
+            <span>{% block titlePage %}{% endblock %}</span>
+          </h1>
+          {% block content %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- END app -->
+</body>
+</html>

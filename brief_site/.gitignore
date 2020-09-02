@@ -1,3 +1,11 @@
 env/*
 **/__pycache__/**
 .coverage
+static/admin/*
+static/assets/sass/*.css
+static/css/*
+static/js/*
+static/rest_framework/*
+node_modules/*
+logs/*
+.env
