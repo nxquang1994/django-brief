@@ -1,7 +1,6 @@
 asgiref==3.2.10
 coverage==5.2.1
 Django==3.1
-django-environ==0.4.5
 django-nose==1.4.7
 django-pipeline==2.0.5
 djangorestframework==3.11.1
@@ -13,3 +12,4 @@ PyMySQL==0.10.0
 pytz==2020.1
 six==1.15.0
 sqlparse==0.3.1
+uWSGI==2.0.19.1

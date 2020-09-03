@@ -1,0 +1,17 @@
+version: '3.1'
+
+services:
+  mysql:
+    volumes:
+    - data-mysql:/var/lib/mysql
+  django:
+    build: django_server
+    volumes:
+    - .:/server
+  web:
+    volumes:
+    - .:/server
+
+volumes:
+  data-mysql:
+    driver: local
