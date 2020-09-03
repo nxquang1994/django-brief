@@ -15,15 +15,6 @@ import os
 import sys
 import logging
 from django.contrib.messages import constants as messages
-import environ
-
-# Config environment
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
-# Reading .env file
-environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
-DEBUG = env('DEBUG')
+DEBUG = os.environ.get('DEBUG', True)
 
 ALLOWED_HOSTS = [
     '*'
@@ -98,15 +89,18 @@ WSGI_APPLICATION = 'brief_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
+        'NAME': os.environ.get('DB_NAME', ''),
+        'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', ''),
+        'PORT': os.environ.get('DB_PORT', ''),
         'OPTIONS': {
-            'charset': env('DB_CHARSET'),
+            'charset': os.environ.get('DB_CHARSET', ''),
             'use_unicode': True,
             'init_command': 'SET default_storage_engine=INNODB, character_set_connection=utf8, collation_connection=utf8_unicode_ci'
+        },
+        'TEST': {
+            'NAME': os.environ.get('TEST_DB_NAME', ''),
         },
     }
 }
@@ -134,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 # Declare app name
-APP_NAME = env('APP_NAME')
+APP_NAME = os.environ.get('APP_NAME', '')
 
 LANGUAGE = 'en'
 

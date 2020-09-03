@@ -1,0 +1,23 @@
+upstream app_server_wsgiapp {
+    server django:8000;
+}
+
+server {
+    listen 80;
+    server_name localhost YOUR_HOST;
+
+    root /server/;
+
+    location /static {
+        alias /server/static;
+    }
+
+    location / {
+        include       uwsgi_params;
+        uwsgi_pass    app_server_wsgiapp;
+        uwsgi_param   Host                $http_host;
+        uwsgi_param   X-Real-IP           $remote_addr;
+        uwsgi_param   X-Forwarded-For     $proxy_add_x_forwarded_for;
+        uwsgi_param   X-Forwarded-Proto   $http_x_forwarded_proto;
+    }
+}

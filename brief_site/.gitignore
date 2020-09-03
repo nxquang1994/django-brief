@@ -9,3 +9,5 @@ static/rest_framework/*
 node_modules/*
 logs/*
 .env
+web_server/default.conf
+docker-compose.dev.yml

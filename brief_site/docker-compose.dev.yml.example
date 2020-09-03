@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+  mysql:
+    volumes:
+    - data-mysql:/var/lib/mysql
+  django:
+    image: passonate_django:lastest
+    build: django_server
+    volumes:
+    - .:/server
+  web:
+    ports:
+    - "YOUR_PORT:80"
+    volumes:
+    - .:/server
+
+volumes:
+  data-mysql:
+    driver: local
