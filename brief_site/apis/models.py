@@ -19,3 +19,20 @@ class RssFeedItem(models.Model):
     def delete(self):
         self.deleted_flag = True
         self.save()
+
+    # def __init__(self, id, category, title, link, published_date, created_at, deleted_flag, updated_at):
+    #     self.category = category
+    #     self.title = title
+    #     self.linl = link
+    #     self.published_date = published_date
+
+    
+    @classmethod
+    def from_all_prop(cls, data):
+        return cls(
+            # category=data['category'],
+            # title=data['title'],
+            # link=data['link'],
+            # published_date=data['published_date']
+        )
+

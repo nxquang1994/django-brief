@@ -9,3 +9,9 @@
 
 // Original Custom Style
 @import "custom";
+
+$cardBackground: #ffffff ;
+
+.custom-card {
+    background-color: $cardBackground;
+}

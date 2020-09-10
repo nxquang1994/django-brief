@@ -1,0 +1,36 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block titlePage %}Item detail{% endblock %}
+
+{% block content %}
+   <div class="card border-dark bg-light" style="background-color: #fff;">
+     <div class="card-body">
+         <table class="table">
+             <tbody>
+                 <tr>
+                    <td>Id</td>
+                    <td>{{ item.id }}</td>
+                 </tr>
+                 <tr>
+                   <td>Category</td>
+                   <td>{{ item.category }}</td>
+                 </tr>
+                 <tr>
+                   <td>Title</td>
+                   <td>{{ item.title }}</td>
+                 </tr>
+                 <tr>
+                  <td>Publish date</td>
+                  <td>{{ item.published_date }}</td>
+                 </tr>
+                 <tr>
+                  <td>Created at</td>
+                  <td>{{ item.created_at }}</td>
+                </tr>
+             </tbody>
+         </table>
+     </div>
+   </div>
+{% endblock %}

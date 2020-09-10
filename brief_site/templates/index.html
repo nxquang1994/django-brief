@@ -1,0 +1,37 @@
+{% extends "layouts/app.html" %}
+
+{% block advance_ref %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <table id="table-item">
+        <thead>
+            <th>Id</th>
+            <th>Category</th>
+            <th>Name</th>
+            <th>Publish date</th>
+        </thead>
+    </table>
+{% endblock %}
+
+{% block script_site %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#table-item").DataTable({
+            ajax: {
+                url: "{% url 'site_data' %}",
+                method: "GET",
+            },
+            columns: [
+                {  data: 'id' },
+                { data: 'category' },
+                { data: 'title' },
+                { data: 'published_date' },
+            ]
+        });
+    });
+</script>
+{% endblock %}
+

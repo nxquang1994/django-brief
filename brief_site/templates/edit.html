@@ -1,0 +1,93 @@
+
+{% extends "layouts/app.html" %}
+
+{% block title %}Edit item{% endblock %}
+
+{% block titlePage %}Edit item{% endblock %}
+
+{% block advance_ref %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+{% endblock %}
+
+{% block content %}
+   <div class="card border-dark bg-light">
+     <div class="card-body">
+         <form action="{% url 'edit_item' item_id %}" method="post">
+            {{ form.non_field_errors }}
+            {% csrf_token %}
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">{{ form.category.label_tag }}</div>
+                        <div class="col-md-5">{{ form.category }} </div>
+                    </div>
+                    {% if form.category.errors %}
+                        <div class="row"><ol>
+                            {% for error in form.category.errors %}
+                                <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                            {% endfor %}
+                        </ol></div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">{{ form.title.label_tag }}</div>
+                        <div class="col-md-5">{{ form.title }} </div>
+                    </div>
+                    {% if form.title.errors %}
+                        <div class="row"><ol>
+                            {% for error in form.title.errors %}
+                                <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                            {% endfor %}
+                        </ol></div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">{{ form.link.label_tag }}</div>
+                        <div class="col-md-5">{{ form.link }} </div>
+                    </div>
+                    {% if form.link.errors %}
+                        <div class="row"><ol>
+                            {% for error in form.link.errors %}
+                                <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                            {% endfor %}
+                        </ol></div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">{{ form.published_date.label_tag }}</div>
+                        <div class="col-md-5">{{ form.published_date }} </div>
+                    </div>
+                    {% if form.published_date.errors %}
+                        <div class="row"><ol>
+                            {% for error in form.published_date.errors %}
+                                <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                            {% endfor %}
+                        </ol></div>
+                    {% endif %}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+         </form>
+     </div>
+   </div>
+{% endblock %}
+
+{% block script_site %}
+   <script>
+       $(document).ready(function() {
+           $(".date-picker").datepicker({
+               'dateFormat': 'yy-mm-dd'
+           });
+       })
+   </script>
+{% endblock %}
