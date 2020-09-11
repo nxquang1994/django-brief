@@ -1,0 +1,75 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}Create Item{% endblock %}
+
+{% block titlePage %}Create Item{% endblock %}
+{% block script %}
+<script type="text/javascript">
+  $(function() {
+    $('.date-picker').datetimepicker({
+      locale: 'en',
+      format: 'YYYY-MM-DD HH:mm:ss',
+      date: moment()
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<form class="form-horizontal" method="POST">
+  {% csrf_token %}
+
+  <div class="form-group required">
+    <label for="category" class="form-label col-md-9 col-lg-6">
+      {{ form.category.label }}{{ form.category.help_text }}
+    </label>
+
+    <div class="col-md-9 col-lg-6 col-vertically">
+      {{ form.category }}
+    </div>
+  </div>
+
+  <div class="form-group required">
+    <label for="title" class="form-label col-md-9 col-lg-6">
+      {{ form.title.label }}{{ form.title.help_text }}
+    </label>
+
+    <div class="col-md-9 col-lg-6 col-vertically">
+      {{ form.title }}
+    </div>
+  </div>
+
+  <div class="form-group required">
+    <label for="link" class="form-label col-md-9 col-lg-6">
+      {{ form.link.label }}{{ form.link.help_text }}
+    </label>
+
+    <div class="col-md-9 col-lg-6 col-vertically">
+      {{ form.link }}
+    </div>
+  </div>
+
+  <div class="form-group required">
+    <label for="publishedDate" class="form-label col-md-9 col-lg-6">
+      {{ form.published_date.label }}{{ form.published_date.help_text }}
+    </label>
+
+    <div class="col-md-9 col-lg-6 col-vertically">
+      {{ form.published_date }}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-9 col-lg-6 btn-primary-div">
+      <a href="{% url 'home' %}" class="btn btn-default btn-wide">
+        <span class="glyphicon glyphicon-circle-arrow-left"></span>
+        <span>Back To Item List</span>
+      </a>
+      <button type="submit" class="btn btn-primary btn-wide">
+        <span class="glyphicon glyphicon-plus-sign"></span>
+        <span>Create Item</span>
+      </button>
+    </div>
+  </div>
+</form>
+{% endblock %}

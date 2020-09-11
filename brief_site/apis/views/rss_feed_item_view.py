@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 import feedparser
 import ssl
-from apis.models import RssFeedItem
-from apis.logs.log import logger
+from common_app.models import RssFeedItem
+from common_app.logs.log import logger
 from apis.common import Utils
 from time import mktime
 from datetime import datetime

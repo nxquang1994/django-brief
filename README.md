@@ -13,8 +13,8 @@ $ git checkout develop
 ```
 ### Setup Environment
 ```
-※Specify port and host argument
-$ ./tools/setup.sh 8080 passonate.dev.com
+※Specify mysql port, web port and host argument
+$ ./tools/setup.sh 3306 8080 passonate.dev.com
 ```
 
 ### Setup and run docker container
@@ -38,7 +38,7 @@ $ make test
 $ http://localhost:8080/api/feeds/analysisRssFeedItem
 ex) Body parameter
 {
-    "urls": "http://rss.cnn.com/rss/edition_entertainment.rss"
+    "urls": "http://rss.cnn.com/rss/edition_entertainment.rss,http://www.reddit.com/r/python/.rss"
 }
 ```
 ### Web Page

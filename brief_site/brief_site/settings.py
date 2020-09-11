@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apis',
     'rest_framework',
+    'common_app',
     'brief_app',
     'django_nose',
     'pipeline',
@@ -101,6 +102,8 @@ DATABASES = {
         },
         'TEST': {
             'NAME': os.environ.get('TEST_DB_NAME', ''),
+            'CHARSET': 'utf8',
+            'COLLATION': 'utf8_unicode_ci',
         },
     }
 }
@@ -181,6 +184,8 @@ PIPELINE_JS = {
         'source_filenames': (
             'assets/js/jquery.js',
             'assets/js/bootstrap.js',
+            'assets/js/moment-with-locales.js',
+            'assets/js/bootstrap-datetimepicker.js',
         ),
         'output_filename': 'js/app.js',
     },
@@ -221,7 +226,8 @@ LOGGING = {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs/logfile'),
-            'maxBytes': 50000,
+            # 5MB
+            'maxBytes': 5000000,
             'backupCount': 5,
             'formatter': 'standard'
         },
@@ -233,19 +239,22 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers':['console'],
+            'handlers': ['console'],
             'propagate': True,
             'level':'WARN'
         },
         'django.db.backends': {
-            'handlers': ['console'],
+            'handlers': ['console', 'logfile'],
             'level': 'DEBUG',
+            # Required to avoid double logging with root logger
             'propagate': False
         },
-        'apis': {
+        'common_app': {
             'handlers': ['console', 'logfile'],
-            'level': 'DEBUG'
-        }
+            'level': 'DEBUG',
+            # Required to avoid double logging with root logger
+            'propagate': False
+        },
     }
 }
 
@@ -256,7 +265,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # Tell nose to measure coverage on the apis
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=apis',
+    '--cover-package=apis,brief_app,common_app',
     '--cover-erase',
 ]
 
