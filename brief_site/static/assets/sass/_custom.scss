@@ -1,5 +1,4 @@
 $sidebar-width: 190px;
-$breadcrumb-height: 38px;
 $default-padding: 15px;
 $button-xs-width: 70%;
 
@@ -251,4 +250,94 @@ ul {
 
 .label-tag {
   background-color: $label-tag-bg;
+}
+
+/* =====================
+  Input
+===================== */
+@mixin placeholderColor($color) {
+  &:placeholder-shown {
+    color: $color;
+  }
+  &::-webkit-input-placeholder {
+    color: $color;
+  }
+  &:-moz-placeholder {
+    color:$color;
+    opacity: 1;
+  }
+  &::-moz-placeholder {
+    color:$color;
+    opacity: 1;
+  }
+  &:-ms-input-placeholder {
+    color: $color;
+  }
+}
+
+input {
+  @include placeholderColor(#82cff7)
+}
+
+/* =====================
+  Form
+===================== */
+.form-group {
+  &.required {
+    .form-label:before {
+      content: '*';
+      position: absolute;
+      left: 4px;
+      margin-top: -5px;
+      font-size: 24px;
+      color: $required-color;
+    }
+  }
+
+  .col-vertically {
+    float: none;
+  }
+
+  .btn-primary-div {
+    a {
+      float: left;
+    }
+    button {
+      float: right;
+    }
+  }
+}
+
+@media (min-width: $screen-md-min) {
+  .form-group {
+    .col-vertically {
+      margin-top: 24px;
+    }
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+  .form-group {
+    .btn-primary-div {
+      text-align: center;
+      .btn {
+        width: $button-xs-width;
+      }
+
+      a {
+        margin-bottom: 15px;
+      }
+
+      a, button {
+        float: none;
+      }
+    }
+  }
+}
+
+/* =====================
+  Alert
+===================== */
+.alert {
+  margin-bottom: 0;
 }

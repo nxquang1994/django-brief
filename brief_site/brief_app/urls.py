@@ -5,4 +5,5 @@ from brief_app import views
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', views.home, name='home'),
+    path('items/create', views.createItem, name='createItem'),
 ]

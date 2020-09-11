@@ -1,0 +1,5 @@
+[run]
+omit = *__init__*, *migrations*, *urls*
+
+[report]
+omit = *__init__*, *migrations*, *urls*

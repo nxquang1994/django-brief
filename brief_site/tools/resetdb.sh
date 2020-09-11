@@ -14,7 +14,7 @@ cd `dirname $0`/..
 # Re-create database
 docker-compose exec mysql mysql -u passonate -ppassonate -e "DROP DATABASE passonate;"
 echo "Drop Database";
-docker-compose exec mysql mysql -u passonate -ppassonate -e "CREATE DATABASE passonate;"
+docker-compose exec mysql mysql -u passonate -ppassonate -e "CREATE DATABASE passonate DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
 echo "Create Database";
 
 # Migrate

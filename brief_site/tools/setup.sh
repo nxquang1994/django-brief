@@ -1,10 +1,11 @@
 #!/bin/bash
 set -e # fail on any error
 
-PORT="$1"
-HOST="$2"
+MYSQL_PORT="$1"
+WEB_PORT="$2"
+HOST="$3"
 
-if [ -n "$PORT" -a -n "$HOST" ]; then
+if [ -n "$MYSQL_PORT" -a -n "$WEB_PORT" -a -n "$HOST" ]; then
     PWD=`pwd`
     cd `dirname $0`/..
 
@@ -19,7 +20,7 @@ if [ -n "$PORT" -a -n "$HOST" ]; then
     cp .env.local.example .env
 
     # Create docker dev
-    sed -e "s/YOUR_PORT/$PORT/" docker-compose.dev.yml.example > docker-compose.dev.yml
+    sed -e "s/YOUR_MYSQL_PORT/$MYSQL_PORT/; s/YOUR_WEB_PORT/$WEB_PORT/" docker-compose.dev.yml.example > docker-compose.dev.yml
 
     npm install
 
@@ -32,5 +33,5 @@ if [ -n "$PORT" -a -n "$HOST" ]; then
 
     cd $PWD
 else
-    echo 'Please enter port and host'
+    echo 'Please enter mysql port, web port and host'
 fi

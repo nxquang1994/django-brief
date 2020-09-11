@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework.views import status
-from apis.models import RssFeedItem
+from common_app.models import RssFeedItem
 from apis.tests.common.utils import UtilTest
 from apis.common import Utils
 
