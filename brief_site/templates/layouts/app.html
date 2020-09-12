@@ -10,6 +10,7 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
   <script src="{% static 'js/app.js' %}"></script>
+  {% block script %}{% endblock %}
 </head>
 <body>
 <div id="app">
@@ -63,7 +64,7 @@
         </a>
       </li>
       <ul id="item-sidebar" class="collapse item-multiple-collapse">
-        <li><a href="">Item List</a></li>
+        <li><a href="{% url 'listItem' %}">Item List</a></li>
       </ul>
     </ul>
   </div>

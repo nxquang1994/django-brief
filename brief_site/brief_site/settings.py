@@ -15,15 +15,6 @@ import os
 import sys
 import logging
 from django.contrib.messages import constants as messages
-import environ
-
-# Config environment
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
-# Reading .env file
-environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,9 +24,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
-DEBUG = env('DEBUG')
+# Config debug
+DEBUG = os.environ.get('DEBUG', '')
+if DEBUG == 'False':
+    DEBUG = False
+else:
+    DEBUG = True
+
 
 ALLOWED_HOSTS = [
     '*'
@@ -53,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apis',
     'rest_framework',
+    'common_app',
     'brief_app',
     'django_nose',
     'pipeline',
@@ -98,15 +96,20 @@ WSGI_APPLICATION = 'brief_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
+        'NAME': os.environ.get('DB_NAME', ''),
+        'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', ''),
+        'PORT': os.environ.get('DB_PORT', ''),
         'OPTIONS': {
-            'charset': env('DB_CHARSET'),
+            'charset': os.environ.get('DB_CHARSET', ''),
             'use_unicode': True,
             'init_command': 'SET default_storage_engine=INNODB, character_set_connection=utf8, collation_connection=utf8_unicode_ci'
+        },
+        'TEST': {
+            'NAME': os.environ.get('TEST_DB_NAME', ''),
+            'CHARSET': 'utf8',
+            'COLLATION': 'utf8_unicode_ci',
         },
     }
 }
@@ -134,7 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 # Declare app name
-APP_NAME = env('APP_NAME')
+APP_NAME = os.environ.get('APP_NAME', '')
 
 LANGUAGE = 'en'
 
@@ -187,6 +190,8 @@ PIPELINE_JS = {
         'source_filenames': (
             'assets/js/jquery.js',
             'assets/js/bootstrap.js',
+            'assets/js/moment-with-locales.js',
+            'assets/js/bootstrap-datetimepicker.js',
         ),
         'output_filename': 'js/app.js',
     },
@@ -209,49 +214,55 @@ PIPELINE = {
 if len(sys.argv) > 1 and sys.argv[1] == 'test':
     logging.disable(logging.CRITICAL)
 
+APP_LOG_LEVEL = os.environ.get('APP_LOG_LEVEL', 'DEBUG')
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
     'formatters': {
         'standard': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+            'format' : "[%(asctime)s] [%(thread)d] [%(levelname)s] [%(filename)s:%(funcName)s:%(lineno)s] %(message)s",
+            'datefmt' : "%Y-%m-%d %H:%M:%S"
         }
     },
     'handlers': {
         'null': {
-            'level':'DEBUG',
-            'class':'logging.NullHandler'
+            'level': APP_LOG_LEVEL,
+            'class': 'logging.NullHandler'
         },
         'logfile': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
+            'level': APP_LOG_LEVEL,
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs/logfile'),
-            'maxBytes': 50000,
+            # 5MB
+            'maxBytes': 5000000,
             'backupCount': 5,
             'formatter': 'standard'
         },
         'console':{
-            'level':'INFO',
-            'class':'logging.StreamHandler',
+            'level': APP_LOG_LEVEL,
+            'class': 'logging.StreamHandler',
             'formatter': 'standard'
         }
     },
     'loggers': {
         'django': {
-            'handlers':['console'],
+            'handlers': ['console'],
             'propagate': True,
-            'level':'WARN'
+            'level': APP_LOG_LEVEL
         },
         'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
+            'handlers': ['console', 'logfile'],
+            'level': APP_LOG_LEVEL,
+            # Required to avoid double logging with root logger
             'propagate': False
         },
-        'apis': {
+        'common_app': {
             'handlers': ['console', 'logfile'],
-            'level': 'DEBUG'
-        }
+            'level': APP_LOG_LEVEL,
+            # Required to avoid double logging with root logger
+            'propagate': False
+        },
     }
 }
 
@@ -262,7 +273,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # Tell nose to measure coverage on the apis
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=apis',
+    '--cover-package=apis,brief_app,common_app',
     '--cover-erase',
 ]
 

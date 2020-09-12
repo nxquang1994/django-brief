@@ -1,0 +1,79 @@
+{% extends "layouts/app.html" %}
+
+{% block title %}Edit Item{% endblock %}
+
+{% block titlePage %}Edit Item{% endblock %}
+{% block script %}
+<script type="text/javascript">
+  $(function() {
+    $('.date-picker').datetimepicker({
+      locale: 'en',
+      format: 'YYYY-MM-DD HH:mm:ss',
+      date: "{{editItem.published_date|date:'Y-m-d H:i:s'}}"
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<form class="form-horizontal" method="POST">
+  {% csrf_token %}
+
+  <div class="form-group show-form">
+    <label class="col-md-9 col-lg-6">Item ID : {{ editItem.id }}</label>
+  </div>
+
+  <div class="form-group required">
+    <label for="category" class="form-label col-md-9 col-lg-6">
+      {{ form.category.label }}{{ form.category.help_text }}
+    </label>
+
+    <div class="col-md-9 col-lg-6 col-vertically">
+      {{ form.category }}
+    </div>
+  </div>
+
+  <div class="form-group required">
+    <label for="title" class="form-label col-md-9 col-lg-6">
+      {{ form.title.label }}{{ form.title.help_text }}
+    </label>
+
+    <div class="col-md-9 col-lg-6 col-vertically">
+      {{ form.title }}
+    </div>
+  </div>
+
+  <div class="form-group required">
+    <label for="link" class="form-label col-md-9 col-lg-6">
+      {{ form.link.label }}{{ form.link.help_text }}
+    </label>
+
+    <div class="col-md-9 col-lg-6 col-vertically">
+      {{ form.link }}
+    </div>
+  </div>
+
+  <div class="form-group required">
+    <label for="publishedDate" class="form-label col-md-9 col-lg-6">
+      {{ form.published_date.label }}{{ form.published_date.help_text }}
+    </label>
+
+    <div class="col-md-9 col-lg-6 col-vertically">
+      {{ form.published_date }}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-9 col-lg-6 btn-primary-div">
+      <a href="{% url 'listItem' %}" class="btn btn-default btn-wide">
+        <span class="glyphicon glyphicon-circle-arrow-left"></span>
+        <span>Back To Item List</span>
+      </a>
+      <button type="submit" class="btn btn-primary btn-wide">
+        <span class="glyphicon glyphicon-pencil no-color"></span>
+        <span>Edit Item</span>
+      </button>
+    </div>
+  </div>
+</form>
+{% endblock %}

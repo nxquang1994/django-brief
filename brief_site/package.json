@@ -8,7 +8,7 @@
   "author": "brief",
   "license": "",
   "dependencies": {
-    "bootstrap-sass": "^3.4.1",
-    "jquery": "=2.1.3"
+    "bootstrap-datetimepicker-sass": "^3.0.3",
+    "bootstrap-sass": "^3.4.1"
   }
 }
