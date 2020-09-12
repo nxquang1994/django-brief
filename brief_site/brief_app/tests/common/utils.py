@@ -1,4 +1,6 @@
 from datetime import datetime
+from common_app.models import RssFeedItem
+import pytz
 
 class UtilTest():
     """
@@ -44,3 +46,18 @@ class UtilTest():
             datetime.strftime(expectedItem.published_date, '%Y-%m-%d %H:%M:%S'),
             actualItem['published_date']
         )
+
+    """
+    Create data item test
+    """
+    def createDataItemTest():
+        item = RssFeedItem(
+            category='unit_test_category',
+            title='unit_test_title',
+            link='http://abc.com',
+            published_date=datetime.now(tz=pytz.utc)
+        )
+
+        item.save()
+
+        return item

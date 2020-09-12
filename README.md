@@ -15,6 +15,10 @@ $ git checkout develop
 ```
 ※Specify mysql port, web port and host argument
 $ ./tools/setup.sh 3306 8080 passonate.dev.com
+
+※for production. specify production argument
+e.g.
+$ ./tools/setup.sh 3306 8080 passonate.dev.com production
 ```
 
 ### Setup and run docker container

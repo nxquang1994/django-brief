@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import path
 from .views import AnalysisRssFeedItem
 
 # Wire up our API using automatic URL routing.

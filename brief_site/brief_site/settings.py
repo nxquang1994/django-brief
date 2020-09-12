@@ -26,7 +26,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
-DEBUG = os.environ.get('DEBUG', True)
+# Config debug
+DEBUG = os.environ.get('DEBUG', '')
+if DEBUG == 'False':
+    DEBUG = False
+else:
+    DEBUG = True
+
 
 ALLOWED_HOSTS = [
     '*'
@@ -208,23 +214,25 @@ PIPELINE = {
 if len(sys.argv) > 1 and sys.argv[1] == 'test':
     logging.disable(logging.CRITICAL)
 
+APP_LOG_LEVEL = os.environ.get('APP_LOG_LEVEL', 'DEBUG')
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
     'formatters': {
         'standard': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+            'format' : "[%(asctime)s] [%(thread)d] [%(levelname)s] [%(filename)s:%(funcName)s:%(lineno)s] %(message)s",
+            'datefmt' : "%Y-%m-%d %H:%M:%S"
         }
     },
     'handlers': {
         'null': {
-            'level':'DEBUG',
-            'class':'logging.NullHandler'
+            'level': APP_LOG_LEVEL,
+            'class': 'logging.NullHandler'
         },
         'logfile': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
+            'level': APP_LOG_LEVEL,
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs/logfile'),
             # 5MB
             'maxBytes': 5000000,
@@ -232,8 +240,8 @@ LOGGING = {
             'formatter': 'standard'
         },
         'console':{
-            'level':'INFO',
-            'class':'logging.StreamHandler',
+            'level': APP_LOG_LEVEL,
+            'class': 'logging.StreamHandler',
             'formatter': 'standard'
         }
     },
@@ -241,17 +249,17 @@ LOGGING = {
         'django': {
             'handlers': ['console'],
             'propagate': True,
-            'level':'WARN'
+            'level': APP_LOG_LEVEL
         },
         'django.db.backends': {
             'handlers': ['console', 'logfile'],
-            'level': 'DEBUG',
+            'level': APP_LOG_LEVEL,
             # Required to avoid double logging with root logger
             'propagate': False
         },
         'common_app': {
             'handlers': ['console', 'logfile'],
-            'level': 'DEBUG',
+            'level': APP_LOG_LEVEL,
             # Required to avoid double logging with root logger
             'propagate': False
         },

@@ -17,7 +17,11 @@ if [ -n "$MYSQL_PORT" -a -n "$WEB_PORT" -a -n "$HOST" ]; then
     find logs -type d | $SUDO xargs chmod 777
 
     # Copy env
-    cp .env.local.example .env
+    if [ "$4" = "production" ]; then
+        cp .env.production .env
+    else
+        cp .env.local.example .env
+    fi
 
     # Create docker dev
     sed -e "s/YOUR_MYSQL_PORT/$MYSQL_PORT/; s/YOUR_WEB_PORT/$WEB_PORT/" docker-compose.dev.yml.example > docker-compose.dev.yml
