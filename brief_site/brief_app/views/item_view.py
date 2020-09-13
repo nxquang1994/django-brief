@@ -5,16 +5,6 @@ from brief_app.forms import ItemForm
 from common_app.logs.log import logger
 from common_app.models import RssFeedItem
 
-def flashMessage(form):
-    listErrors = []
-    for field, errors in form.errors.items:
-        for currentErr in errors:
-            errorText = field + ' ' + currentErr
-            listErrors.append(errorText)
-            pass
-        pass
-    return listErrors
-
 def createItem(request):
     try:
         if request.method == 'POST':
@@ -37,12 +27,17 @@ def createItem(request):
 
                 logger.warning('Request Param Validation Error [%s]' %  (errors))
 
-                errorList = flashMessage(createItemForm)
-                messages.error(request, errorList)
+                messages.error(request, 'There are errors in typing form')
+
+                request.session['old-form-data'] = request.POST
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-                # messages.error(request, errors)
         else:
+            # Check session & Check Update form data 
             createItemForm = ItemForm()
+            if request.session.has_key('old-form-data'):
+                createItemForm = ItemForm(request.session['old-form-data'])
+                request.session.flush()
+                pass
 
         return render(request, 'items/create.html', {'form': createItemForm})
 
@@ -75,12 +70,16 @@ def editItem(request, itemId):
 
                 logger.warning('Request Param Validation Error [%s]' %  (errors))
 
-                # messages.error(request, errors)
-                errorList = flashMessage(editItemForm)
-                messages.error(request, errorList)
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+                messages.error(request, 'There are errors in typing form')
+                
+                request.session['old-form-data'] = request.POST
         else:
             editItemForm = ItemForm(instance=item)
+            # Check session & Check Update form data 
+            if request.session.has_key('old-form-data'):
+                editItemForm = ItemForm(request.session['old-form-data'])
+                request.session.flush()
+                pass
 
         return render(request, 'items/edit.html', {'form': editItemForm, 'editItem': item})
 
