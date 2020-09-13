@@ -32,14 +32,6 @@
     <div class="col-md-9 col-lg-6 col-vertically">
       {{ form.category }}
     </div>
-
-    {% if form.category.errors %}
-        <ol>
-        {% for error in form.category.errors %}
-            <li><strong class="text-danger">{{ error|escape }}</strong></li>
-        {% endfor %}
-        </ol>
-    {% endif %}
   </div>
 
   <div class="form-group required">
@@ -50,14 +42,6 @@
     <div class="col-md-9 col-lg-6 col-vertically">
       {{ form.title }}
     </div>
-
-    {% if form.title.errors %}
-        <ol>
-        {% for error in form.title.errors %}
-            <li><strong class="text-danger">{{ error|escape }}</strong></li>
-        {% endfor %}
-        </ol>
-    {% endif %}
   </div>
 
   <div class="form-group required">
@@ -68,14 +52,6 @@
     <div class="col-md-9 col-lg-6 col-vertically">
       {{ form.link }}
     </div>
-
-    {% if form.link.errors %}
-        <ol>
-        {% for error in form.link.errors %}
-            <li><strong class="text-danger">{{ error|escape }}</strong></li>
-        {% endfor %}
-        </ol>
-    {% endif %}
   </div>
 
   <div class="form-group required">
@@ -86,14 +62,6 @@
     <div class="col-md-9 col-lg-6 col-vertically">
       {{ form.published_date }}
     </div>
-
-    {% if form.published_date.errors %}
-        <ol>
-        {% for error in form.published_date.errors %}
-            <li><strong class="text-danger">{{ error|escape }}</strong></li>
-        {% endfor %}
-        </ol>
-    {% endif %}
   </div>
 
   <div class="form-group">
