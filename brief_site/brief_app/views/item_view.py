@@ -31,7 +31,7 @@ def showItem(request, itemId):
 
         return render(request, 'items/show.html', {'itemDetail': item})
 
-    except RssFeedItem.DoesNotExist:
+    except Http404:
         logger.warning('Item not found target_item_id[%s]' % itemId)
         # In case of item do not exists
         raise Http404
@@ -106,7 +106,7 @@ def editItem(request, itemId):
 
         return render(request, 'items/edit.html', {'form': editItemForm, 'editItem': item})
 
-    except RssFeedItem.DoesNotExist:
+    except Http404:
         logger.warning('Item not found target_item_id[%s]' % itemId)
         # In case of item do not exists
         raise Http404
