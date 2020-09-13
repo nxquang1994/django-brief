@@ -5,6 +5,16 @@ from brief_app.forms import ItemForm
 from common_app.logs.log import logger
 from common_app.models import RssFeedItem
 
+def flashMessage(form):
+    listErrors = []
+    for field, errors in form.errors.items:
+        for currentErr in errors:
+            errorText = field + ' ' + currentErr
+            listErrors.append(errorText)
+            pass
+        pass
+    return listErrors
+
 def createItem(request):
     try:
         if request.method == 'POST':
@@ -27,7 +37,10 @@ def createItem(request):
 
                 logger.warning('Request Param Validation Error [%s]' %  (errors))
 
-                messages.error(request, errors)
+                errorList = flashMessage(createItemForm)
+                messages.error(request, errorList)
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+                # messages.error(request, errors)
         else:
             createItemForm = ItemForm()
 
@@ -62,7 +75,10 @@ def editItem(request, itemId):
 
                 logger.warning('Request Param Validation Error [%s]' %  (errors))
 
-                messages.error(request, errors)
+                # messages.error(request, errors)
+                errorList = flashMessage(editItemForm)
+                messages.error(request, errorList)
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         else:
             editItemForm = ItemForm(instance=item)
 
