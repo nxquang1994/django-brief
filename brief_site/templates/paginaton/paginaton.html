@@ -1,0 +1,81 @@
+{% load helper_tag %}
+
+<div class="paginate-footer">
+  <div class="text-center paginate-button">
+    {% if dataList.has_other_pages %}
+    <ul class="pagination">
+      {% if dataList.has_previous %}
+        <li><a href="?{% queryTransform request page=dataList.previous_page_number %}">&laquo;</a></li>
+      {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+      {% endif %}
+      <!-- Config display maximum 5 pages(currentPage, currentPage -2 and currentPage -2) -->
+      <!-- In case of currentPage = 1, display maximun 5 pages(currentPage and currentPage + 4)  -->
+      <!-- In case of currentPage = 2, display maximun 5 pages(currentPage, currentPage -1 and currentPage + 3)  -->
+      <!-- In case of having first [...] and last [...], display maximum 4 pages(currentPage, currentPage -1 and currentPage -2)  -->
+      {% setVar dataList.paginator.num_pages as totalPage %}
+      {% setVar dataList.number as currentPage %}
+      {% if totalPage > 5 %}
+        {% setVar currentPage|add:'-2' as minPage %}
+        {% setVar currentPage|add:'+2' as maxPage %}
+
+        <!-- In case of currentPage = 1, display 4 numbers after currentPage -->
+        {% if currentPage == 1 %}
+          {% setVar currentPage|add:'+4' as maxPage %}
+        <!-- In case of currentPage = 2, display 3 numbers after currentPage -->
+        {% elif currentPage == 2 %}
+          {% setVar currentPage|add:'+3' as maxPage %}
+        {% endif %}
+
+        <!-- In case of having first [...], display 1 number before currentPage -->
+        {% if minPage > 1 %}
+          <li><a href="?{% queryTransform request page=currentPage|add:'-2' %}">&hellip;</a></li>
+
+          {% setVar currentPage|add:'-1' as minPage %}
+        {% endif %}
+
+        <!-- In case of previous lastPage, display 3 numbers before currentPage -->
+        {% if currentPage == totalPage|add:'-1' %}
+          {% setVar currentPage|add:'-3' as minPage %}
+        <!-- In case of lastPage, display 4 numbers before currentPage -->
+        {% elif currentPage == totalPage %}
+          {% setVar currentPage|add:'-4' as minPage %}
+        {% endif %}
+
+        {% for page in dataList.paginator.page_range %}
+          {% if dataList.number == page %}
+            <li class="active"><span>{{ page }} <span class="sr-only">(current)</span></span></li>
+          <!-- Display 2 numbers before currentPage and after currentPage -->
+          {% elif page >= minPage and page <= maxPage %}
+            <li><a href="?{% queryTransform request page=page %}">{{ page }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if maxPage < totalPage %}
+          <li><a href="?{% queryTransform request page=currentPage|add:'+3' %}">&hellip;</a></li>
+        {% endif %}
+      {% else %}
+        {% for page in dataList.paginator.page_range %}
+          {% if currentPage == page %}
+            <li class="active"><span>{{ page }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li><a href="?{% queryTransform request page=page %}">{{ page }}</a></li>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      {% if dataList.has_next %}
+        <li><a href="?{% queryTransform request page=dataList.next_page_number %}">&raquo;</a></li>
+      {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+    </ul>
+  {% endif %}
+  </div>
+  <div class="text-right">
+    <div class="pagination">
+      <input type="number" name="perPage" min="1" value="{% getParamQuery request 'perPage' PER_PAGE %}" class="num-input-xs form-control paginate-number">
+      <label class="paginate-label">Data Per Page</label>
+    </div>
+  </div>
+</div>

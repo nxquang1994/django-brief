@@ -1,9 +1,150 @@
 from django.test import TestCase
 from django.urls import reverse
 from unittest import mock
-from rest_framework.views import status
 from brief_app.tests.common.utils import UtilTest
 from common_app.models import RssFeedItem
+
+"""
+[Test list item]
+"""
+class ListItemTest(TestCase):
+
+    def setUp(self) -> None:
+        self.url = reverse('listItem')
+
+    def testInvalidHttpMethod(self):
+        UtilTest.callPost(self, self.url, None, 405)
+
+    def testExceptionError(self):
+        with mock.patch('common_app.models.RssFeedItem.objects.all') as mockMethod:
+            mockMethod.side_effect = Exception('test error')
+
+            UtilTest.callGet(self, self.url, None, 500)
+
+    def testPageNotInteger(self):
+        # Prepare data
+        for i in range(2):
+            UtilTest.createDataItemTest()
+
+        params = {
+            'page': 'invalidPage'
+        }
+
+        response = UtilTest.callGet(self, self.url, params)
+        self.assertTemplateUsed(response, 'items/index.html')
+        # Assert items
+        actualItems = RssFeedItem.objects.all().order_by('-id')
+        actualItems = actualItems.values()
+        UtilTest.assertItemList(self, response.context['dataList'], actualItems, 1, 1)
+
+    def testEmptyPage(self):
+        # Prepare data
+        for i in range(2):
+            UtilTest.createDataItemTest()
+
+        params = {
+            'page': 2
+        }
+
+        response = UtilTest.callGet(self, self.url, params)
+        self.assertTemplateUsed(response, 'items/index.html')
+        # Assert items
+        actualItems = RssFeedItem.objects.all().order_by('-id')
+        actualItems = actualItems.values()
+        UtilTest.assertItemList(self, response.context['dataList'], actualItems, 1, 1)
+
+    def testMultiplesPage(self):
+        # Prepare data
+        for i in range(2):
+            UtilTest.createDataItemTest()
+
+        params = {
+            'page': 1,
+            'perPage': 1
+        }
+
+        response = UtilTest.callGet(self, self.url, params)
+        self.assertTemplateUsed(response, 'items/index.html')
+        # Assert items
+        actualItems = RssFeedItem.objects.all().order_by('-id')[:1]
+        actualItems = actualItems.values()
+        # actualItems = actualItems.values()
+        UtilTest.assertItemList(self, response.context['dataList'], actualItems, 2, 1)
+
+    def testMultiplesPage(self):
+        # Prepare data
+        for i in range(2):
+            UtilTest.createDataItemTest()
+
+        params = {
+            'page': 1,
+            'perPage': 1
+        }
+
+        response = UtilTest.callGet(self, self.url, params)
+        self.assertTemplateUsed(response, 'items/index.html')
+        # Assert items
+        actualItems = RssFeedItem.objects.all().order_by('-id')[:1]
+        actualItems = actualItems.values()
+        UtilTest.assertItemList(self, response.context['dataList'], actualItems, 2, 1)
+
+    def testPageAndPerPageEmpty(self):
+        # Prepare data
+        for i in range(10):
+            UtilTest.createDataItemTest()
+
+        response = UtilTest.callGet(self, self.url)
+        self.assertTemplateUsed(response, 'items/index.html')
+        # Assert items
+        actualItems = RssFeedItem.objects.all().order_by('-id')
+        actualItems = actualItems.values()
+        UtilTest.assertItemList(self, response.context['dataList'], actualItems, 1, 1)
+
+    def testSpecifyPageWithoutOne(self):
+        # Prepare data
+        for i in range(2):
+            UtilTest.createDataItemTest()
+
+        params = {
+            'page': 2,
+            'perPage': 1
+        }
+
+        response = UtilTest.callGet(self, self.url, params)
+        self.assertTemplateUsed(response, 'items/index.html')
+        # Assert items
+        actualItems = RssFeedItem.objects.all().order_by('id')[:1]
+        actualItems = actualItems.values()
+        UtilTest.assertItemList(self, response.context['dataList'], actualItems, 2, 2)
+
+    def testSearchCategoryWithEmptyRecord(self):
+        # Prepare data
+        for i in range(2):
+            UtilTest.createDataItemTest()
+
+        params = {
+            'category': 'NotFound'
+        }
+
+        response = UtilTest.callGet(self, self.url, params)
+        self.assertTemplateUsed(response, 'items/index.html')
+        UtilTest.assertItemList(self, response.context['dataList'], [], 1, 1)
+
+    def testSearchCategoryWithHavingRecord(self):
+        # Prepare data
+        for i in range(2):
+            UtilTest.createDataItemTest()
+
+        params = {
+            'category': 'u'
+        }
+
+        response = UtilTest.callGet(self, self.url, params)
+        self.assertTemplateUsed(response, 'items/index.html')
+        # Assert items
+        actualItems = RssFeedItem.objects.all().order_by('id')[:1]
+        actualItems = actualItems.values()
+        UtilTest.assertItemList(self, response.context['dataList'], actualItems, 1, 1)
 
 """
 [Test create item]
@@ -13,14 +154,15 @@ class CreateItemTest(TestCase):
     def setUp(self) -> None:
         self.url = reverse('createItem')
 
+    def testInvalidHttpMethod(self):
+        UtilTest.callPut(self, self.url, None, 405)
+
     def testShowCreateItem(self):
         response = UtilTest.callGet(self, self.url)
         self.assertTemplateUsed(response, 'items/create.html')
 
     def testCategoryReqquired(self):
-        params = None
-
-        response = UtilTest.callPost(self, self.url, params)
+        response = UtilTest.callPost(self, self.url)
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
@@ -169,6 +311,9 @@ class EditItemTest(TestCase):
         self.item = UtilTest.createDataItemTest()
         self.url = reverse('editItem', args=[self.item.id])
 
+    def testInvalidHttpMethod(self):
+        UtilTest.callPut(self, self.url, None, 405)
+
     def testItemNotFound(self):
         UtilTest.callGet(self, reverse('editItem', args=[9999999]), None, 404)
 
@@ -177,9 +322,7 @@ class EditItemTest(TestCase):
         self.assertTemplateUsed(response, 'items/edit.html')
 
     def testCategoryReqquired(self):
-        params = None
-
-        response = UtilTest.callPost(self, self.url, params)
+        response = UtilTest.callPost(self, self.url)
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
@@ -312,9 +455,41 @@ class EditItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('Edit item successfully', str(messages[0]))
+        self.assertIn('Edited item successfully', str(messages[0]))
         self.assertRedirects(response, reverse('listItem'))
 
         # Assert inserted data
         expectedItem = RssFeedItem.objects.get(pk=self.item.id)
         UtilTest.assertItem(self, params, expectedItem)
+
+"""
+[Test delete item]
+"""
+class DeleteItemTest(TestCase):
+    def setUp(self) -> None:
+        self.item = UtilTest.createDataItemTest()
+        self.url = reverse('deleteItem', args=[self.item.id])
+
+    def testInvalidHttpMethod(self):
+        UtilTest.callPut(self, self.url, None, 405)
+
+    def testItemNotFound(self):
+        UtilTest.callPost(self, reverse('deleteItem', args=[9999999]), None, 404)
+
+    def testDeleteItemError(self):
+        with mock.patch('common_app.models.RssFeedItem.delete') as mockMethod:
+            mockMethod.side_effect = Exception('test error')
+
+            response = UtilTest.callPost(self, self.url, None, 500)
+
+    def testDeleteItemSuccess(self):
+        response = UtilTest.callPost(self, self.url)
+
+        messages = list(response.context['messages'])
+        self.assertEqual(len(messages), 1)
+        self.assertIn('Deleted item successfully', str(messages[0]))
+        self.assertRedirects(response, reverse('listItem'))
+
+        # Assert inserted data
+        countItem = RssFeedItem.objects.filter(id=self.item.id).count()
+        self.assertEqual(countItem, 0)

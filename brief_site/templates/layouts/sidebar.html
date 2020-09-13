@@ -1,0 +1,27 @@
+<!-- Screen > 767 -->
+<div id="sidebar-wrapper" class="menu-wrapper hidden-xs-down">
+  <ul id="sidebar-body" class="menu-nav sidebar-collapse">
+    <li id="item-toggle" class="fold-item" data-toggle="collapse" data-target=".item-multiple-collapse">
+      <a>
+        Item Management<span class="glyphicon glyphicon-triangle-bottom"></span>
+      </a>
+    </li>
+    <ul id="item-sidebar" class="collapse item-multiple-collapse">
+      <li class="menu-list-item"><a href="{% url 'listItem' %}">Item List</a></li>
+    </ul>
+  </ul>
+</div>
+
+<!-- Screen <= 767 -->
+<div id="menubar-wrapper" class="menu-wrapper collapse hidden-sm-up" aria-expanded="false">
+  <ul id="menubar-body" class="menu-nav sidebar-collapse">
+    <li id="item-toggle" class="fold-item" data-toggle="collapse" data-target=".item-multiple-collapse">
+      <a>
+        <span>Item Management</span><span class="glyphicon glyphicon-triangle-bottom"></span>
+      </a>
+    </li>
+    <ul id="item-sidebar" class="collapse item-multiple-collapse">
+      <li class="menu-list-item"><a href="{% url 'listItem' %}">Item List</a></li>
+    </ul>
+  </ul>
+</div>
