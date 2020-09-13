@@ -1,6 +1,5 @@
 from common_app.models import RssFeedItem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import get_object_or_404
 
 class ItemService():
 
@@ -28,7 +27,7 @@ class ItemService():
         return paginationItems
 
     def getItemById(itemId):
-        return get_object_or_404(RssFeedItem, pk=itemId)
+        return RssFeedItem.objects.get(pk=itemId)
 
     def deleteItem(itemId):
         RssFeedItem.objects.get(pk=itemId).delete()
