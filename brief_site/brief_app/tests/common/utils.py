@@ -6,7 +6,7 @@ class UtilTest():
     """
     Common call post
     """
-    def callPost(testModule, url, params, statusCode = 200):
+    def callPost(testModule, url, params=None, statusCode = 200):
         response = {}
 
         try:
@@ -36,16 +36,37 @@ class UtilTest():
         return response
 
     """
+    Common call put
+    """
+    def callPut(testModule, url, params, statusCode = 200):
+        response = {}
+
+        try:
+            response = testModule.client.put(url, data=params)
+        except Exception as e:
+            # Use for debug error
+            print(e)
+        finally:
+            testModule.assertEqual(response.status_code, statusCode)
+
+        return response
+
+    """
     Assert item
     """
-    def assertItem(testModule, actualItem, expectedItem):
+    def assertItem(testModule, actualItem, expectedItem, formatDate=None):
+        actualPublishedDate = actualItem['published_date']
+        expectedPublishedDate = expectedItem.published_date
+        if formatDate:
+            actualPublishedDate = datetime.strftime(actualPublishedDate, formatDate)
+            expectedPublishedDate = datetime.strftime(expectedPublishedDate, formatDate)
+        else:
+            expectedPublishedDate = datetime.strftime(expectedPublishedDate, '%Y-%m-%d %H:%M:%S')
+
         testModule.assertEqual(expectedItem.title, actualItem['title'])
         testModule.assertEqual(expectedItem.category, actualItem['category'])
         testModule.assertEqual(expectedItem.link, actualItem['link'])
-        testModule.assertEqual(
-            datetime.strftime(expectedItem.published_date, '%Y-%m-%d %H:%M:%S'),
-            actualItem['published_date']
-        )
+        testModule.assertEqual(expectedPublishedDate, actualPublishedDate)
 
     """
     Create data item test
@@ -61,3 +82,16 @@ class UtilTest():
         item.save()
 
         return item
+
+    """
+    Assert item list
+    """
+    def assertItemList(testModule, dataList, actualItems, expectedTotalPage, expectedCurrentPage):
+        # Assert pagination
+        testModule.assertEqual(dataList.paginator.num_pages, expectedTotalPage)
+        testModule.assertEqual(dataList.number, expectedCurrentPage)
+        # Assert data
+        count = 0
+        for expectedItem in dataList:
+            actualItem = actualItems[count]
+            UtilTest.assertItem(testModule, actualItem, expectedItem, '%Y-%m-%d %H:%M:%S')

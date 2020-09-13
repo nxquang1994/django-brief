@@ -38,36 +38,8 @@
       </div>
   </nav>
 
-  <!-- Screen > 767 -->
-  <div id="sidebar-wrapper" class="menu-wrapper hidden-xs-down">
-    <ul class="menu-nav">
-      <li data-toggle="collapse" href="#item-sidebar">
-        <a>
-          Item Management<span class="glyphicon glyphicon-triangle-bottom"></span>
-        </a>
-      </li>
-      <ul id="item-sidebar" class="collapse">
-        <li>
-          <a href="">Item List</a>
-        </li>
-      </ul>
-    </ul>
-  </div>
-
-  <!-- Screen <= 767 -->
-  <div id="menubar-wrapper" class="menu-wrapper collapse hidden-sm-up" aria-expanded="false">
-    <ul id="menubar-body" class="menu-nav sidebar-collapse">
-      <!-- Comment Menu -->
-      <li id="item-toggle" class="fold-item" data-toggle="collapse" data-target=".item-multiple-collapse">
-        <a>
-          <span>Item Management</span><span class="glyphicon glyphicon-triangle-bottom"></span>
-        </a>
-      </li>
-      <ul id="item-sidebar" class="collapse item-multiple-collapse">
-        <li><a href="{% url 'listItem' %}">Item List</a></li>
-      </ul>
-    </ul>
-  </div>
+  <!-- Sidebar Area -->
+  {% include "layouts/sidebar.html" %}
 
   <div id="main-area" class="exist-auth">
     {% if messages %}
@@ -75,7 +47,7 @@
         {% if forloop.first %}
         <div class="alert {{ message.tags }} alert-dismissible text-center">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">×</span>
+            <span aria-hidden="true">×</span>
           </button>
         {% endif %}
           <p>{{ message }}</p>

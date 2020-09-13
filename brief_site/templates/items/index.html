@@ -1,0 +1,77 @@
+{% extends "layouts/app.html" %}
+
+{% load helper_tag %}
+
+{% block title %}Item List{% endblock %}
+
+{% block titlePage %}Item List{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+  $(function() {
+    initMenu('menu-list-item', 'item-sidebar', 'item-toggle');
+    // When press enter in textbox category, not submit form
+    $('#category').on('keypress', function(e) {
+        let code = e.keyCode || e.which;
+        if (code == 13) {
+            e.preventDefault();
+        }
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<form method="GET" action="{% url 'listItem' %}">
+  <!-- Search Area -->
+  <div class="form-inline list-header">
+    <input id="category" type="text" name="category" class="form-control" autofocus="true" placeholder="Category" maxlength="50" value="{% getParamQuery request 'category' %}">
+
+    <button type="submit" class="btn btn-default form-control">
+      <span class="glyphicon glyphicon-search"></span>
+      <span>Search</span>
+    </button>
+
+    <a href="{% url 'createItem' %}" class="btn btn-primary float-right">
+      <span class="glyphicon glyphicon-plus-sign"></span>
+      <span>Create New Item</span>
+    </a>
+  </div>
+  <!-- Table Area -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-condensed">
+      <tr>
+        <th class="short-column">ID</th>
+        <th>Category</th>
+        <th>Title</th>
+        <th>Published Date</th>
+        <th class="column-icon-3 short-column"></th>
+      </tr>
+      {% for item in dataList %}
+        <tr>
+          <td class="num-column short-column">{{ item.id }}</td>
+          <td>{{ item.category }}</td>
+          <td>{{ item.title }}</td>
+          <td>{{ item.published_date|date:'Y-m-d H:i:s' }}</td>
+          <td class="short-column">
+            <a href="{% url 'showItem' item.id %}">
+              <span class="glyphicon glyphicon-list-alt list-btn-icon"></span>
+            </a>
+            <a href="{% url 'editItem' item.id %}">
+              <span class="glyphicon glyphicon-pencil list-btn-icon"></span>
+            </a>
+            <a data-toggle="modal" data-target="#deleteConfirm" data-url="{% url 'deleteItem' item.id %}" data-id="{{ item.id }}">
+              <span class="glyphicon glyphicon-trash list-btn-icon"></span>
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <!-- Pagination Area -->
+  {% include "paginaton/paginaton.html" %}
+</form>
+
+<!-- Delete modal Area -->
+{% include "modals/delete.html" %}
+{% endblock %}

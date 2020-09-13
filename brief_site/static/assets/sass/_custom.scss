@@ -59,6 +59,14 @@ ul {
           text-decoration: none;
         }
       }
+
+      .glyphicon-triangle-bottom {
+        width: 34px;
+        transition: transform .4s ease 0s;
+        &.rotate {
+          transform: rotate(180deg);
+        }
+      }
     }
     ul.collapsing,
     ul.in {
@@ -72,23 +80,11 @@ ul {
   }
 }
 
-@media (max-width: $screen-xs-max) {
-  #menubar-wrapper {
-    left: 100%;
-    margin-left: $sidebar-width * -1;
-    margin-top: 0;
-    height: auto;
-  }
-}
-
-@media (min-width: $screen-sm-min) {
-  #menubar-wrapper.hidden-sm-up {
-    display: none;
-  }
-}
-
 @media (min-width: $screen-sm-min) {
   .hidden-sm-up {
+    display: none;
+  }
+  #menubar-wrapper.hidden-sm-up {
     display: none;
   }
 }
@@ -120,6 +116,144 @@ ul {
 @media (max-width: $screen-xs-max) {
   .hidden-xs-down {
     display: none;
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+  #menubar-wrapper {
+    left: 100%;
+    margin-left: $sidebar-width * -1;
+    height: auto;
+    margin-top: 0;
+  }
+}
+
+#sidebar-wrapper {
+  li {
+    a {
+      &:hover,
+      &:active {
+        color: $sidebar-hover-color;
+        background-color: $sidebar-hover-bg;
+        text-decoration: none;
+      }
+    }
+  }
+  .open {
+    a {
+      &:hover,
+      &:focus {
+        background-color: $sidebar-hover-bg;
+      }
+    }
+  }
+}
+
+#sidebar-header {
+  height: 38px;
+  margin-bottom: 0px;
+  li {
+    a {
+      text-align: right;
+      background: $sidebar-default-bg;
+      padding-top: 10px;
+      padding-right: 10px;
+    }
+  }
+}
+
+#main-icon {
+  font-size: 18px;
+}
+
+#sidebar-wrapper.sidebar-not-active {
+  margin-left: -225px;
+  left: 20px;
+  width: $sidebar-width;
+  background: $sidebar-default-bg;
+  position: fixed;
+  height: 100%;
+  z-index: 10000;
+  transition: all .4s ease 0s;
+  .sidebar-nav,
+  #sidebar-header {
+    display: block;
+    float: left;
+    width: $sidebar-width;
+    margin-left: 50px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      text-indent: 10px;
+      a {
+        color: $sidebar-default-color;
+        display: block;
+        text-decoration: none;
+        padding: 5px 0px;
+      }
+    }
+    > .sidebar-brand {
+      font-size: 18px;
+      a {
+        color: $sidebar-default-color;
+        text-align: right;
+        margin-left: 35px;
+        padding-right: 10px;
+        border-radius: 19px;
+        transition: all .4s ease 0s;
+        &:hover {
+          color: $sidebar-hover-color;
+          background-color: $sidebar-hover-bg;
+        }
+      }
+    }
+    ul.collapse.in {
+      -webkit-padding-start: 0px;
+      li {
+        a {
+          padding-left: 14px;
+          width: $sidebar-width;
+        }
+      }
+    }
+  }
+  .sidebar-nav {
+    .dropdown-menu {
+      background-color: $sidebar-default-bg;
+    }
+    li {
+      a {
+        &:hover,
+        &:active,
+        &:focus {
+          color: $sidebar-default-color;
+          background-color: $sidebar-default-bg;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  #sidebar-header {
+    li {
+      a {
+        padding-top: 5px;
+        padding-right: 0px;
+        &:hover {
+          color: $sidebar-hover-color;
+          background-color: $sidebar-hover-bg;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  #sidebar-wrapper {
+    left: $sidebar-width;
+    width: $sidebar-width;
+    transition: all .4s ease 0s;
   }
 }
 
@@ -277,6 +411,11 @@ ul {
 
 input {
   @include placeholderColor(#82cff7)
+
+  &.form-control.num-input-xs {
+    display: inline-block;
+    width: 68px;
+  }
 }
 
 /* =====================
@@ -347,4 +486,140 @@ input {
 ===================== */
 .error-page {
   padding-top: 25px;
+}
+
+/* =====================
+  List Header
+===================== */
+.list-header {
+  min-height: 36px;
+  margin-bottom: 15px;
+
+  .float-right {
+    float: right;
+  }
+
+  @media (max-width: $screen-xs-max) {
+    text-align: center;
+    .form-control {
+      width: 100%;
+    }
+    .btn {
+      width: $button-xs-width;
+      float: initial;
+      margin: 5px 0 5px 0;
+    }
+  }
+}
+
+/* =====================
+  List
+===================== */
+.table-responsive {
+  overflow-x: auto;
+  /* Workaround for IE9 bug (see https://github.com/twbs/bootstrap/issues/14837) */
+  min-height: 0.01%;
+
+  .table {
+    thead,
+    tbody,
+    tfoot {
+      tr {
+        &:nth-child(odd) {
+          td {
+            background-color: $odd-row-color;
+          }
+        }
+
+        th {
+          border-top: 0;
+          background-color: $table-header-color;
+
+          @media (min-width: $screen-md-min) {
+            white-space: nowrap;
+          }
+        }
+        td {
+          background-color: $table-data-color;
+        }
+        th,
+        td {
+          &.num-column {
+            text-align: right;
+          }
+
+          @for $i from 1 through 4 {
+            &.column-icon-#{$i} {
+              width: #{10 + $i * 25}px;
+            }
+          }
+
+          @media (min-width: $screen-md-min) {
+            min-width: 100px;
+            max-width: 210px;
+            word-wrap: break-word;
+            &.short-column {
+              min-width: initial;
+              white-space: nowrap;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: $screen-sm-max) {
+    width: 100%;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    margin-bottom: 0;
+
+    /* Tighten up spacing */
+    .table {
+      margin-bottom: 0;
+
+      /* Ensure the content doesn't wrap */
+      thead,
+      tbody,
+      tfoot {
+        tr {
+          th,
+          td {
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
+
+  .list-btn-icon {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
+
+/* =====================
+  Pagination
+===================== */
+.paginate-footer {
+  display: flex;
+  .paginate-button {
+    flex: 1 0 auto;
+
+    .pagination {
+      width: 100%;
+
+      .disabled {
+        opacity: 0.3;
+      }
+    }
+  }
+  .paginate-number {
+    float: left;
+  }
+  .paginate-label {
+    margin-bottom: 0px;
+    margin-top: 7px;
+    margin-left: 8px;
+  }
 }

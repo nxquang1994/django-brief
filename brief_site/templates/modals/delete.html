@@ -24,11 +24,10 @@
 
 <script>
 $('#deleteConfirm').on('show.bs.modal', function(event) {
-    var btn = $(event.relatedTarget);
-    var url = btn.data('url');
-    var name = btn.data('name');
-    $(this).find('.modal-title').text('Are you delete ' + name + ' sure?');
-    $(this).find('#btn-delete').attr('action', url);
+  let btn = $(event.relatedTarget),
+    url = btn.data('url');
+    id = btn.data('id');
+  $(this).find('.modal-title').text('Are you delete item item_id[' + id + '] sure?');
+  $(this).find('#btn-delete').attr('action', url);
 });
 </script>
-
