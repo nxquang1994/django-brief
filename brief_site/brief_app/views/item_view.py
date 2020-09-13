@@ -64,9 +64,18 @@ def createItem(request):
 
                 logger.warning('Request Param Validation Error [%s]' % errors)
 
-                messages.error(request, errors)
+                messages.error(request, 'There are errors in typing form')
+
+                request.session['old-form-data'] = request.POST
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         else:
             createItemForm = ItemForm()
+
+            # Check session & Check Update form data 
+            if request.session.has_key('old-form-data'):
+                createItemForm = ItemForm(request.session['old-form-data'])
+                request.session.flush()
+                pass
 
         return render(request, 'items/create.html', {'form': createItemForm})
 
@@ -100,9 +109,18 @@ def editItem(request, itemId):
 
                 logger.warning('Request Param Validation Error [%s]' % errors)
 
-                messages.error(request, errors)
+                messages.error(request, 'There are errors in typing form')
+
+                request.session['old-form-data'] = request.POST
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         else:
             editItemForm = ItemForm(instance=item)
+
+            # Check session & Check Update form data 
+            if request.session.has_key('old-form-data'):
+                editItemForm = ItemForm(request.session['old-form-data'])
+                request.session.flush()
+                pass
 
         return render(request, 'items/edit.html', {'form': editItemForm, 'editItem': item})
 
