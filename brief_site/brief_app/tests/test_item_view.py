@@ -147,6 +147,31 @@ class ListItemTest(TestCase):
         UtilTest.assertItemList(self, response.context['dataList'], actualItems, 1, 1)
 
 """
+[Test show item]
+"""
+class ShowItemTest(TestCase):
+
+    def setUp(self) -> None:
+        self.item = UtilTest.createDataItemTest()
+        self.url = reverse('showItem', args=[self.item.id])
+
+    def testInvalidHttpMethod(self):
+        UtilTest.callPut(self, self.url, None, 405)
+
+    def testItemNotFound(self):
+        UtilTest.callGet(self, reverse('showItem', args=[9999999]), None, 404)
+
+    def testExceptionError(self):
+        with mock.patch('brief_app.services.ItemService.getItemById') as mockMethod:
+            mockMethod.side_effect = Exception('test error')
+
+            UtilTest.callGet(self, self.url, None, 500)
+
+    def testShowItem(self):
+        response = UtilTest.callGet(self, self.url)
+        self.assertTemplateUsed(response, 'items/show.html')
+
+"""
 [Test create item]
 """
 class CreateItemTest(TestCase):
@@ -281,7 +306,7 @@ class CreateItemTest(TestCase):
         with mock.patch('brief_app.forms.ItemForm.save') as mockMethod:
             mockMethod.side_effect = Exception('test error')
 
-            response = UtilTest.callPost(self, self.url, params, 500)
+            UtilTest.callPost(self, self.url, params, 500)
 
     def testCreateItemSuccess(self):
         params = {
@@ -441,7 +466,7 @@ class EditItemTest(TestCase):
         with mock.patch('brief_app.forms.ItemForm.save') as mockMethod:
             mockMethod.side_effect = Exception('test error')
 
-            response = UtilTest.callPost(self, self.url, params, 500)
+            UtilTest.callPost(self, self.url, params, 500)
 
     def testEditItemSuccess(self):
         params = {
@@ -477,10 +502,10 @@ class DeleteItemTest(TestCase):
         UtilTest.callPost(self, reverse('deleteItem', args=[9999999]), None, 404)
 
     def testDeleteItemError(self):
-        with mock.patch('common_app.models.RssFeedItem.delete') as mockMethod:
+        with mock.patch('brief_app.services.ItemService.deleteItem') as mockMethod:
             mockMethod.side_effect = Exception('test error')
 
-            response = UtilTest.callPost(self, self.url, None, 500)
+            UtilTest.callPost(self, self.url, None, 500)
 
     def testDeleteItemSuccess(self):
         response = UtilTest.callPost(self, self.url)
