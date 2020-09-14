@@ -106,7 +106,7 @@ class AnalysisRssFeedItem(generics.ListCreateAPIView):
                 logger.error('Exception：%s, %s' % (type(e), e.args))
 
                 statusCode = status.HTTP_500_INTERNAL_SERVER_ERROR
-                returnedValue = Utils.createErrorResponse('Error system')
+                returnedValue = Utils.createErrorResponse('Error system - Error parse feed URL')
         finally:
             if statusCode == status.HTTP_200_OK:
                 logger.info('request: %s, response: %s' % (request.data, returnedValue))

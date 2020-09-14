@@ -28,13 +28,8 @@ $ make start
 
 ### Setup custom domain
 ```
-※Add custom domain into /ect/hosts
+※If you want to use custom domain, Add custom domain into /ect/hosts
 ex) 127.0.0.1 passonate.dev.com
-```
-
-### Run unit test
-```
-$ make test
 ```
 
 ### Api analysis rss feed
@@ -42,10 +37,24 @@ $ make test
 $ http://localhost:8080/api/feeds/analysisRssFeedItem
 ex) Body parameter
 {
-    "urls": "http://rss.cnn.com/rss/edition_entertainment.rss,http://www.reddit.com/r/python/.rss"
+    "urls": "http://www.smartbrief.com/servlet/rss?b=ASCD,http://www.newyorker.com/feed/humor"
 }
+
+※Use custom domain
+ex)
+$ http://passonate.dev.com:8080/api/feeds/analysisRssFeedItem
 ```
+
 ### Web Page
 ```
 $ http://localhost:8080/web/
+
+※Use custom domain
+ex)
+$ http://passonate.dev.com:8080/web/
+```
+
+### Run unit test
+```
+$ make test
 ```

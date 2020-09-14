@@ -7,6 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.conf import settings
 from brief_app.services import ItemService
 from common_app.models import RssFeedItem
+from brief_app.common.helper import getErrorMessage
 
 @require_http_methods(['GET'])
 def listItem(request):
@@ -60,11 +61,11 @@ def createItem(request):
 
                 return HttpResponseRedirect(resolve_url('listItem'))
             else:
-                errors = createItemForm.errors
+                errorMessage = getErrorMessage(createItemForm.errors.get_json_data())
 
-                logger.warning('Request Param Validation Error [%s]' % errors)
+                logger.warning('Request Param Validation Error [%s]' % errorMessage)
 
-                messages.error(request, errors)
+                messages.error(request, errorMessage)
         else:
             createItemForm = ItemForm()
 
@@ -96,11 +97,11 @@ def editItem(request, itemId):
 
                 return HttpResponseRedirect(resolve_url('listItem'))
             else:
-                errors = editItemForm.errors
+                errorMessage = getErrorMessage(editItemForm.errors.get_json_data())
 
-                logger.warning('Request Param Validation Error [%s]' % errors)
+                logger.warning('Request Param Validation Error [%s]' % errorMessage)
 
-                messages.error(request, errors)
+                messages.error(request, errorMessage)
         else:
             editItemForm = ItemForm(instance=item)
 

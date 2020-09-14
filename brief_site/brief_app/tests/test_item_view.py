@@ -191,7 +191,7 @@ class CreateItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>category<ul class="errorlist"><li>This field is required.</li></ul>', str(messages[0]))
+        self.assertEqual('Category is required.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/create.html')
 
     def testCategoryOver50Characters(self):
@@ -207,7 +207,7 @@ class CreateItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>category<ul class="errorlist"><li>Ensure this value has at most 50 characters (it has 51).</li></ul>', str(messages[0]))
+        self.assertEqual('Category must be less than or equal to 50 characters.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/create.html')
 
     def testTitleReqquired(self):
@@ -219,7 +219,7 @@ class CreateItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>title<ul class="errorlist"><li>This field is required.</li></ul>', str(messages[0]))
+        self.assertEqual('Title is required.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/create.html')
 
     def testTitleOver255Characters(self):
@@ -236,7 +236,7 @@ class CreateItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>title<ul class="errorlist"><li>Ensure this value has at most 255 characters (it has 256).</li></ul>', str(messages[0]))
+        self.assertEqual('Title must be less than or equal to 255 characters.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/create.html')
 
     def testLinkReqquired(self):
@@ -249,7 +249,7 @@ class CreateItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>link<ul class="errorlist"><li>This field is required.</li></ul>', str(messages[0]))
+        self.assertEqual('Link is required.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/create.html')
 
     def testInvalidLink(self):
@@ -263,7 +263,7 @@ class CreateItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>link<ul class="errorlist"><li>Enter a valid URL.</li></ul>', str(messages[0]))
+        self.assertEqual('Invalid link format.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/create.html')
 
     def testPublishedDateReqquired(self):
@@ -277,7 +277,7 @@ class CreateItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>published_date<ul class="errorlist"><li>This field is required.</li></ul>', str(messages[0]))
+        self.assertEqual('Published date is required.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/create.html')
 
     def testPublishedDateInvalidFormat(self):
@@ -292,7 +292,7 @@ class CreateItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>published_date<ul class="errorlist"><li>Enter a valid date/time.</li></ul>', str(messages[0]))
+        self.assertEqual('Invalid published date format.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/create.html')
 
     def testCreateItemError(self):
@@ -351,7 +351,7 @@ class EditItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>category<ul class="errorlist"><li>This field is required.</li></ul>', str(messages[0]))
+        self.assertEqual('Category is required.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/edit.html')
 
     def testCategoryOver50Characters(self):
@@ -367,7 +367,7 @@ class EditItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>category<ul class="errorlist"><li>Ensure this value has at most 50 characters (it has 51).</li></ul>', str(messages[0]))
+        self.assertEqual('Category must be less than or equal to 50 characters.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/edit.html')
 
     def testTitleReqquired(self):
@@ -379,7 +379,7 @@ class EditItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>title<ul class="errorlist"><li>This field is required.</li></ul>', str(messages[0]))
+        self.assertEqual('Title is required.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/edit.html')
 
     def testTitleOver255Characters(self):
@@ -396,7 +396,7 @@ class EditItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>title<ul class="errorlist"><li>Ensure this value has at most 255 characters (it has 256).</li></ul>', str(messages[0]))
+        self.assertEqual('Title must be less than or equal to 255 characters.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/edit.html')
 
     def testLinkReqquired(self):
@@ -409,7 +409,7 @@ class EditItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>link<ul class="errorlist"><li>This field is required.</li></ul>', str(messages[0]))
+        self.assertEqual('Link is required.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/edit.html')
 
     def testInvalidLink(self):
@@ -423,7 +423,7 @@ class EditItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>link<ul class="errorlist"><li>Enter a valid URL.</li></ul>', str(messages[0]))
+        self.assertEqual('Invalid link format.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/edit.html')
 
     def testPublishedDateReqquired(self):
@@ -437,7 +437,7 @@ class EditItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>published_date<ul class="errorlist"><li>This field is required.</li></ul>', str(messages[0]))
+        self.assertEqual('Published date is required.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/edit.html')
 
     def testPublishedDateInvalidFormat(self):
@@ -452,7 +452,7 @@ class EditItemTest(TestCase):
 
         messages = list(response.context['messages'])
         self.assertEqual(len(messages), 1)
-        self.assertIn('<ul class="errorlist"><li>published_date<ul class="errorlist"><li>Enter a valid date/time.</li></ul>', str(messages[0]))
+        self.assertEqual('Invalid published date format.', str(messages[0]))
         self.assertTemplateUsed(response, 'items/edit.html')
 
     def testEditItemError(self):
