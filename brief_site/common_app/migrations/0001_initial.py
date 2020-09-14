@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='RssFeedItem',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('category', models.CharField(blank=True, max_length=50, null=True)),
+                ('category', models.CharField(max_length=255, blank=True, null=True)),
                 ('title', models.TextField()),
                 ('link', models.TextField(blank=True, null=True)),
                 ('published_date', models.DateTimeField(blank=True, null=True)),

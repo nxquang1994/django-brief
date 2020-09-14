@@ -7,6 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.conf import settings
 from brief_app.services import ItemService
 from common_app.models import RssFeedItem
+from brief_app.common.helper import getErrorMessage
 
 @require_http_methods(['GET'])
 def listItem(request):
@@ -31,7 +32,7 @@ def showItem(request, itemId):
 
         return render(request, 'items/show.html', {'itemDetail': item})
 
-    except Http404:
+    except RssFeedItem.DoesNotExist:
         logger.warning('Item not found target_item_id[%s]' % itemId)
         # In case of item do not exists
         raise Http404
@@ -60,11 +61,11 @@ def createItem(request):
 
                 return HttpResponseRedirect(resolve_url('listItem'))
             else:
-                errors = createItemForm.errors
+                errorMessage = getErrorMessage(createItemForm.errors.get_json_data())
 
-                logger.warning('Request Param Validation Error [%s]' % errors)
+                logger.warning('Request Param Validation Error [%s]' % errorMessage)
 
-                messages.error(request, errors)
+                messages.error(request, errorMessage)
         else:
             createItemForm = ItemForm()
 
@@ -96,17 +97,17 @@ def editItem(request, itemId):
 
                 return HttpResponseRedirect(resolve_url('listItem'))
             else:
-                errors = editItemForm.errors
+                errorMessage = getErrorMessage(editItemForm.errors.get_json_data())
 
-                logger.warning('Request Param Validation Error [%s]' % errors)
+                logger.warning('Request Param Validation Error [%s]' % errorMessage)
 
-                messages.error(request, errors)
+                messages.error(request, errorMessage)
         else:
             editItemForm = ItemForm(instance=item)
 
         return render(request, 'items/edit.html', {'form': editItemForm, 'editItem': item})
 
-    except Http404:
+    except RssFeedItem.DoesNotExist:
         logger.warning('Item not found target_item_id[%s]' % itemId)
         # In case of item do not exists
         raise Http404

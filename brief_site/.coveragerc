@@ -1,5 +1,5 @@
 [run]
-omit = *__init__*, *migrations*, *urls*, **helper_tag**
+omit = *__init__*, *migrations*, *urls*, **helper_tag**, **models**, **error_view**
 
 [report]
-omit = *__init__*, *migrations*, *urls*, **helper_tag**
+omit = *__init__*, *migrations*, *urls*, **helper_tag**, **models**, **error_view**

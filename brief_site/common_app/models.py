@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class RssFeedItem(models.Model):
-    category = models.CharField(max_length=50, null=True, blank=True)
+    category = models.CharField(max_length=255, null=True, blank=True)
     title = models.TextField()
     link = models.TextField(null=True, blank=True)
     published_date = models.DateTimeField(null=True, blank=True)

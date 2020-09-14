@@ -194,6 +194,7 @@ PIPELINE_JS = {
             'assets/js/bootstrap-datetimepicker.js',
             'assets/js/prevent-multi-submit.js',
             'assets/js/sidebar.js',
+            'assets/js/prevent-refresh-submit.js',
         ),
         'output_filename': 'js/app.js',
     },

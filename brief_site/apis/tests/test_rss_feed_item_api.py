@@ -23,7 +23,7 @@ class RssFeedItemAPITest(TestCase):
         }
 
         responseJson = UtilTest.callAPIPost(self, self.url, params, status.HTTP_500_INTERNAL_SERVER_ERROR)
-        self.assertEqual(responseJson, Utils.createErrorResponse('Error system'))
+        self.assertEqual(responseJson, Utils.createErrorResponse('Error system - Error parse feed URL'))
 
     def testEmptyFeedItem(self):
         params = {
@@ -80,6 +80,14 @@ class RssFeedItemAPITest(TestCase):
     def testItemWithEmptyPublishedDate(self):
         params = {
             'urls': 'http://www.reddit.com/r/python/.rss'
+        }
+
+        responseJson = UtilTest.callAPIPost(self, self.url, params, status.HTTP_200_OK)
+        self.assertEqual(len(responseJson['returnedValue']['itemList']), RssFeedItem.objects.count())
+
+    def testItemWithMultipleCategories(self):
+        params = {
+            'urls': 'http://www.newyorker.com/feed/humor'
         }
 
         responseJson = UtilTest.callAPIPost(self, self.url, params, status.HTTP_200_OK)
